@@ -1,7 +1,13 @@
 bin/
 obj/
-.vs/
 *.user
-obj/
-bin/
+*.suo
+.DS_Store
+*.apk
+*.aab
+*.ipa
+*.p12
+*.mobileprovision
 *.png
+*.jpg
+*.jpeg
