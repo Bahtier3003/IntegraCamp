@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:IntegraCamp.ViewModels"
+             x:Class="IntegraCamp.Views.ProfilePage"
+             Title="Профиль">
+
+    <ContentPage.BindingContext>
+        <viewmodels:ProfileViewModel />
+    </ContentPage.BindingContext>
+
+    <StackLayout Padding="20" Spacing="15">
+
+        <Frame CornerRadius="20" Padding="20" BorderColor="#2196F3">
+            <VerticalStackLayout Spacing="15">
+
+                <!-- Просмотр режим -->
+                <StackLayout IsVisible="{Binding IsViewing}">
+                    <Label Text="Личный кабинет" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="120,*" RowSpacing="15">
+                        <Label Text="ФИО:" FontAttributes="Bold" Grid.Row="0" Grid.Column="0"/>
+                        <Label Text="{Binding Profile.FullName}" Grid.Row="0" Grid.Column="1"/>
+
+                        <Label Text="Должность:" FontAttributes="Bold" Grid.Row="1" Grid.Column="0"/>
+                        <Label Text="{Binding Profile.Position}" Grid.Row="1" Grid.Column="1"/>
+
+                        <Label Text="Email:" FontAttributes="Bold" Grid.Row="2" Grid.Column="0"/>
+                        <Label Text="{Binding Profile.Email}" Grid.Row="2" Grid.Column="1"/>
+
+                        <Label Text="Телефон:" FontAttributes="Bold" Grid.Row="3" Grid.Column="0"/>
+                        <Label Text="{Binding Profile.Phone}" Grid.Row="3" Grid.Column="1"/>
+                    </Grid>
+
+                    <Button Text="Редактировать" Command="{Binding EditCommand}" 
+                            BackgroundColor="#2196F3" TextColor="White"/>
+                </StackLayout>
+
+                <!-- Редактирование режим -->
+                <StackLayout IsVisible="{Binding IsEditing}" Spacing="15">
+                    <Label Text="Редактирование профиля" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+                    <Entry Placeholder="ФИО" Text="{Binding Profile.FullName}"/>
+                    <Entry Placeholder="Должность" Text="{Binding Profile.Position}"/>
+                    <Entry Placeholder="Email" Text="{Binding Profile.Email}" Keyboard="Email"/>
+                    <Entry Placeholder="Телефон" Text="{Binding Profile.Phone}" Keyboard="Telephone"/>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Button Text="Сохранить" Command="{Binding SaveCommand}" 
+                                BackgroundColor="#4CAF50" TextColor="White" HorizontalOptions="FillAndExpand"/>
+                        <Button Text="Отмена" Command="{Binding CancelCommand}" 
+                                BackgroundColor="#F44336" TextColor="White" HorizontalOptions="FillAndExpand"/>
+                    </HorizontalStackLayout>
+                </StackLayout>
+
+            </VerticalStackLayout>
+        </Frame>
+
+    </StackLayout>
+</ContentPage>

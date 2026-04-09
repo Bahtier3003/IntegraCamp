@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:IntegraCamp.ViewModels"
+             xmlns:converters="clr-namespace:IntegraCamp.Converters"
+             x:Class="IntegraCamp.Views.CounselorsPage"
+             Title="Вожатые">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:StatusToColorConverter x:Key="StatusToColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.BindingContext>
+        <viewmodels:CounselorsViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid RowDefinitions="Auto,Auto,*">
+
+        <!-- Статистика -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,*,*" BackgroundColor="#2196F3" Padding="10">
+            <Label Grid.Column="0" Text="{Binding TotalCount, StringFormat='Всего: {0}'}" 
+                   TextColor="White" HorizontalOptions="Center" FontAttributes="Bold"/>
+            <Label Grid.Column="1" Text="{Binding FreeCount, StringFormat='Свободны: {0}'}" 
+                   TextColor="#4CAF50" HorizontalOptions="Center" FontAttributes="Bold"/>
+            <Label Grid.Column="2" Text="{Binding AssignedCount, StringFormat='Закреплены: {0}'}" 
+                   TextColor="#F44336" HorizontalOptions="Center" FontAttributes="Bold"/>
+        </Grid>
+
+        <!-- Поиск и фильтры -->
+        <StackLayout Grid.Row="1" Padding="10" Spacing="5">
+            <SearchBar Placeholder="Поиск по ФИО..." 
+                       Text="{Binding SearchText}" />
+
+            <HorizontalStackLayout Spacing="10">
+                <Picker Title="Корпус" ItemsSource="{Binding Buildings}" 
+                        SelectedItem="{Binding SelectedBuilding}" WidthRequest="150" />
+                <Picker Title="Статус" ItemsSource="{Binding Statuses}" 
+                        SelectedItem="{Binding SelectedStatus}" WidthRequest="120" />
+                <Button Text="+" Command="{Binding AddCommand}" WidthRequest="40" BackgroundColor="#2196F3" TextColor="White"/>
+            </HorizontalStackLayout>
+        </StackLayout>
+
+        <!-- Список вожатых -->
+        <CollectionView Grid.Row="2" ItemsSource="{Binding Counselors}" SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10" Margin="10,5">
+                        <Frame BorderColor="LightGray" CornerRadius="10" Padding="10">
+                            <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto">
+
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding FullName}" 
+                                       FontAttributes="Bold" FontSize="16" />
+
+                                <Label Grid.Row="0" Grid.Column="1" Text="{Binding Status}" 
+                                       TextColor="{Binding Status, Converter={StaticResource StatusToColorConverter}}"
+                                       FontAttributes="Bold"/>
+
+                                <Label Grid.Row="1" Grid.Column="0" 
+                                       Text="{Binding SquadNumber, StringFormat='Отряд: {0}'}" 
+                                       FontSize="12" TextColor="Gray"/>
+
+                                <Label Grid.Row="1" Grid.Column="1" Text="{Binding Building}" 
+                                       FontSize="12" TextColor="Gray"/>
+
+                                <Label Grid.Row="2" Grid.Column="0" 
+                                       Text="{Binding ChildrenCount, StringFormat='Детей: {0}'}" 
+                                       FontSize="12" TextColor="Gray"/>
+
+                                <HorizontalStackLayout Grid.Row="2" Grid.Column="1" Spacing="10">
+                                    <Button Text="✏️" Command="{Binding BindingContext.EditCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}" 
+                                            CommandParameter="{Binding .}" BackgroundColor="#2196F3" WidthRequest="40" HeightRequest="40" CornerRadius="20"/>
+                                    <Button Text="🗑️" Command="{Binding BindingContext.DeleteCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}" 
+                                            CommandParameter="{Binding .}" BackgroundColor="#F44336" WidthRequest="40" HeightRequest="40" CornerRadius="20"/>
+                                </HorizontalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

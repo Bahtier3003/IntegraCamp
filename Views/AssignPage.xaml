@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:IntegraCamp.ViewModels"
+             x:Class="IntegraCamp.Views.AssignPage"
+             Title="Назначение вожатого">
+
+    <ContentPage.BindingContext>
+        <viewmodels:AssignViewModel />
+    </ContentPage.BindingContext>
+
+    <StackLayout Padding="20" Spacing="20">
+
+        <Label Text="Назначение вожатого на отряд" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+        <Picker Title="Выберите корпус" ItemsSource="{Binding Buildings}" 
+                SelectedItem="{Binding SelectedBuilding}" />
+
+        <Entry Placeholder="Номер отряда" Keyboard="Numeric" 
+               Text="{Binding SquadNumber}" />
+
+        <Label Text="Доступные вожатые:" FontAttributes="Bold"/>
+
+        <CollectionView ItemsSource="{Binding FreeCounselors}" 
+                        SelectedItem="{Binding SelectedCounselor}"
+                        SelectionMode="Single"
+                        HeightRequest="300">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10" Margin="5">
+                        <Frame BorderColor="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=SelectedItem, Converter={StaticResource SelectedToColorConverter}}"
+                               CornerRadius="8" Padding="10">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding FullName}" FontAttributes="Bold"/>
+                                <Label Text="{Binding Building}" FontSize="12" TextColor="Gray"/>
+                                <Label Text="{Binding PhoneHash, StringFormat='Телефон: {0}'}" FontSize="10" TextColor="Gray"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Text="Назначить" Command="{Binding AssignCommand}" 
+                BackgroundColor="#2196F3" TextColor="White" FontSize="16"/>
+
+    </StackLayout>
+</ContentPage>
